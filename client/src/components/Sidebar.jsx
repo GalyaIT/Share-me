@@ -49,7 +49,7 @@ const Sidebar = ({ user, closeToggle }) => {
                             to={`/category/${category.name}`}
                             className={({ isActive }) => (isActive ? isActiveStyle : isNotActiveStyle)}
                             onClick={handleCloseSidebar}
-                            key={categories.name}
+                            key={category.name}
                         >
                             {category.name}
                         </NavLink>

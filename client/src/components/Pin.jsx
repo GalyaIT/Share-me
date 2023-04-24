@@ -38,10 +38,10 @@ const Pin = ({ pin }) => {
         .setIfMissing({ save: [] })
         .insert('after', 'save[-1]', [{
           _key: uuidv4(),
-          userId: user?.googleId,
+          userId: user?.sub,
           postedBy: {
             _type: 'postedBy',
-            _ref: user?.googleId,
+            _ref: user?.sub,
           },
         }])
         .commit()

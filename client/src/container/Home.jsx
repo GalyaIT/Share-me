@@ -15,7 +15,7 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
   const userInfo = fetchUser();
-    
+    console.log(userInfo);
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0)
@@ -26,6 +26,7 @@ const Home = () => {
 
     client.fetch(query).then((data) => {
       setUser(data[0]);
+      
     });
   }, []);
 

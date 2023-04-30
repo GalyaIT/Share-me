@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdDownloadForOffline } from "react-icons/md";
+import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
@@ -86,7 +87,9 @@ const PinDetail = ({ user }) => {
                 <MdDownloadForOffline />
               </a>
             </div>
-            <a href={pinDetail.destination} target="_blank" rel="noreferrer">
+            <a  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
+             href={pinDetail.destination} target="_blank" rel="noreferrer">
+            <BsFillArrowUpRightCircleFill />
               {pinDetail.destination?.slice(8, 20)}...
             </a>
           </div>
@@ -153,17 +156,17 @@ const PinDetail = ({ user }) => {
         </div>
       </div>
      
-      {pins?.length > 0 ? (
-        <>
+      {pins?.length > 0 && (       
         <h2 className="text-center font-bold text-2xl mt-8 mb-4">
           More like this
         </h2>
+        )}
+        {pins?(
           <MasonryLayout pins={pins} />
-          </>
-      ) : (
-        
-        <Spinner message="Loading more pins" />
-      )}
+        ):(
+          <Spinner message="Loading more pins" />
+        )}    
+  
     </>
   );
 };

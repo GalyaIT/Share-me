@@ -20,6 +20,7 @@ const CreatePin = ({ user }) => {
   const navigate = useNavigate();
 
   const uploadImage = (e) => {
+   
     const selectedFile = e.target.files[0];
   
     if (selectedFile.type === 'image/png' || selectedFile.type === 'image/svg' || selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/gif' || selectedFile.type === 'image/tiff') {
@@ -40,7 +41,7 @@ const CreatePin = ({ user }) => {
     }
   };
 
-  const savePin = () => {
+  const savePin = () => {   
     if (title && about && destination && imageAsset?._id && category) {
       const doc = {
         _type: 'pin',
@@ -75,6 +76,7 @@ const CreatePin = ({ user }) => {
       );
     }
   };
+
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
       {fields && (

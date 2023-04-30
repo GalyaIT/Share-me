@@ -14,8 +14,7 @@ const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
-  const userInfo = fetchUser();
-    console.log(userInfo);
+  const userInfo = fetchUser();  
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0)

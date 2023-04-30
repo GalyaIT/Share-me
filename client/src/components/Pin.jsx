@@ -9,15 +9,16 @@ import { fetchUser } from "../utils/fetchUser";
 
 const Pin = ({pin:{postedBy, image, _id, destination, save}}) => {
   const [postHovered, setPostHovered] = useState(false);
+  const [savingPost, setSavingPost] = useState(false);
 
   const navigate = useNavigate();
   const user = fetchUser();
-console.log(user);
-  const alreadySaved = !!(save?.filter((item)=>item.postedBy._id===user.sub))?.length;
 
-  const savePin =(id)=>{
-if(!alreadySaved){
+  const alreadySaved = !!(save?.filter((item)=>item.postedBy._id===user.sub))?.length;
  
+  const savePin =(id)=>{
+
+if(!alreadySaved){ 
 
   client
   .patch(id)
@@ -31,17 +32,17 @@ if(!alreadySaved){
         },
       }])
       .commit()
-          .then(() => {
-            window.location.reload();
-            
+          .then(() => {          
+           window.location.reload(); 
+            setSavingPost(false);        
           });   
       }
   }
   const deletePin = (id) => {
         client
           .delete(id)
-          .then(() => {
-            window.location.reload();
+          .then(() => {                 
+           window.location.reload();              
           });
       };
     
@@ -76,7 +77,7 @@ if(!alreadySaved){
 
               {alreadySaved ? (
                 <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
-                 {save?.length} Saved
+                 {save?.length} Saved {savingPost ? 'Saving' : 'Save'}
                 </button>
               ) : (
                 <button 

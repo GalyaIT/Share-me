@@ -34,8 +34,10 @@ const Feed = () => {
   if (loading) return <Spinner message="We are adding new ideas to your feed" />
 
   return (
-    <div>
-      {pins && <MasonryLayout pins = {pins} /> } 
+    <div>     
+      {pins?.length!==0 ?(<MasonryLayout pins = {pins} /> ):
+      <p className='text-xl text-center text-blue-600/25 bg-center mt-20
+      '>There are no pictures in this category :( </p> } 
     </div>
   )
 }

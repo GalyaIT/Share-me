@@ -36,8 +36,8 @@ const Feed = () => {
   return (
     <div>     
       {pins?.length!==0 ?(<MasonryLayout pins = {pins} /> ):
-      <p className='text-xl text-center text-blue-600/25 bg-center mt-20
-      '>There are no pictures in this category :( </p> } 
+      <h2 className='text-xl text-center text-slate-900/50 bg-center mt-20
+      '>No pins available</h2> } 
     </div>
   )
 }

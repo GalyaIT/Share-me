@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin} from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import jwt_decode from 'jwt-decode';
@@ -61,7 +61,7 @@ console.log(decoded)
               )}
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
+              cookiepolicy="single_host_origin"
             />
           </div>
         </div>

@@ -13,7 +13,7 @@ function Spinner({ message }) {
         className="m-5"
       />
 
-      <p className="text-xl text-center text-blue-600/25 bg-center mt-20">{message}</p>
+      <p className="text-xl text-center text-slate-900/50 bg-center mt-20">{message}</p>
     </div>
   );
 }

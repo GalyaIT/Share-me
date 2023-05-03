@@ -30,6 +30,28 @@ setUser(data[0]);
 
 },[userId]);
 
+useEffect(()=>{
+  if(text==='Created'){
+    const createdPinsQuery = userCreatedPinsQuery(userId);
+  client.fetch(createdPinsQuery)
+  .then((data)=>{
+  setPins(data);
+  })
+  }else{
+    const savedPinsQuery = userSavedPinsQuery(userId);
+    client.fetch(savedPinsQuery)
+    .then((data)=>{
+    setPins(data);
+    })
+  }
+  
+
+  
+  },[text,userId]);
+
+
+
+
 const removeUser = () => {
   localStorage.clear();
 
@@ -70,13 +92,41 @@ if(!user){
                 removeUser();
                }}
                >
- <AiOutlineLogout color="red" fontSize={21} />
+                <AiOutlineLogout color="red" fontSize={21} />
                </button>
             )}
-
           </div>
       </div>
-
+            <div className="text-center mb-7"> 
+            <button
+            type="button"
+            onClick={(e) => {
+              setText(e.target.textContent);
+              setActiveBtn('created');
+            }}
+            className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}
+          >
+            Created
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              setText(e.target.textContent);
+              setActiveBtn('saved');
+            }}
+            className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
+          >
+            Saved
+          </button>
+            </div>
+        <div className="px-2">
+          <MasonryLayout pins={pins} />
+          {pins?.length === 0 && (
+            <div className="flex justify-center font-bold items-center w-full text-1xl mt-2">
+              No Pins Found!
+            </div>
+        )}
+        </div>
      </div>
     </div>
   )

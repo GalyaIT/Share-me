@@ -9,13 +9,14 @@ import { fetchUser } from "../utils/fetchUser";
 
 const Pin = ({pin:{postedBy, image, _id, destination, save}}) => {
   const [postHovered, setPostHovered] = useState(false);
-  const [savingPost, setSavingPost] = useState(false);
+  
 
   const navigate = useNavigate();
   const user = fetchUser();
 
   const alreadySaved = !!(save?.filter((item)=>item.postedBy._id===user.sub))?.length;
  
+  
   const savePin =(id)=>{
 
 if(!alreadySaved){ 
@@ -33,8 +34,8 @@ if(!alreadySaved){
       }])
       .commit()
           .then(() => {          
-           window.location.reload(); 
-            setSavingPost(false);        
+           window.location.reload();  
+                 
           });   
       }
   }
@@ -77,11 +78,11 @@ if(!alreadySaved){
 
               {alreadySaved ? (
                 <button type="button" className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none">
-                 {save?.length} Saved {savingPost ? 'Saving' : 'Save'}
+                 {save?.length} Saved 
                 </button>
               ) : (
                 <button 
-                onClick={(e)=>{
+                onClick={(e)=>{                
                   e.stopPropagation();
                   savePin(_id);
                 }}

@@ -14,6 +14,8 @@ const CreatePin = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [fields, setFields] = useState(null);
   const [category, setCategory] = useState('');
+  const [comments, setComments] = useState([]);
+  const [save, setSave] = useState([]);
   const [imageAsset, setImageAsset] = useState(null);
   const [wrongImageType, setWrongImageType] = useState(false);
 
@@ -61,6 +63,8 @@ const CreatePin = ({ user }) => {
           _ref: user._id,
         },
         category,
+        save,
+        comments,
       };
       client.create(doc).then(() => {
         navigate('/');

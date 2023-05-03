@@ -20,8 +20,7 @@ const PinDetail = ({ user }) => {
     let query = pinDetailQuery(pinId);
     if (query) {
       client.fetch(query).then((data) => {
-        setPinDetail(data[0]);
-        console.log(data);
+        setPinDetail(data[0]);       
         if (data[0]) {
           query = pinDetailMorePinQuery(data[0]);
           client.fetch(query).then((res) => {
@@ -42,7 +41,7 @@ const PinDetail = ({ user }) => {
 
       client
         .patch(pinId)
-        .setIfMissing({ comments: [] })
+        // .setIfMissing({ comments: [] })
         .insert("after", "comments[-1]", [
           {
             comment,
@@ -52,7 +51,7 @@ const PinDetail = ({ user }) => {
         ])
         .commit()
         .then(() => {
-          fetchPinDetails();
+          fetchPinDetails();         
           setComment("");
           setAddingComment(false);
         });
@@ -86,6 +85,9 @@ const PinDetail = ({ user }) => {
               >
                 <MdDownloadForOffline />
               </a>
+            </div>
+            <div>
+              
             </div>
             <a  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
              href={pinDetail.destination} target="_blank" rel="noreferrer">
@@ -131,9 +133,9 @@ const PinDetail = ({ user }) => {
           </div>
 
           <div className="flex flex-wrap mt-6 gap-3">
-            <Link to={`/user-profile/${user._id}`}>
+            <Link to={`/user-profile/${user?._id}`}>
               <img
-                src={user.image}
+                src={user?.image}
                 className="w-10 h-10 rounded-full cursor-pointer"
                 alt="user-profile"
               />

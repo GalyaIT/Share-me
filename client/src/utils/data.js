@@ -115,6 +115,15 @@ export const pinDetailMorePinQuery = (pin) => {
         image
       },
     },
+    comments[]{
+      comment,
+      _key,
+      postedBy->{
+        _id,
+        userName,
+        image
+      },
+    }
   }`;
   return query;
 };
@@ -141,6 +150,15 @@ export const searchQuery = (searchTerm) => {
               image
             },
           },
+          comments[]{
+            comment,
+            _key,
+            postedBy->{
+              _id,
+              userName,
+              image
+            },
+          }
         }`;
   return query;
 };
@@ -166,6 +184,15 @@ export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
           image
         },
       },
+      comments[]{
+        comment,
+        _key,
+        postedBy->{
+          _id,
+          userName,
+          image
+        },
+      }
     } `;
 
     export const userCreatedPinsQuery = (userId) => {
@@ -189,6 +216,15 @@ export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
             image
           },
         },
+        comments[]{
+          comment,
+          _key,
+          postedBy->{
+            _id,
+            userName,
+            image
+          },
+        }
       }`;
       return query;
     };
@@ -214,6 +250,15 @@ export const feedQuery = `*[_type == "pin"] | order(_createdAt desc) {
             image
           },
         },
+        comments[]{
+          comment,
+          _key,
+          postedBy->{
+            _id,
+            userName,
+            image
+          },
+        }
       }`;
       return query;
     };

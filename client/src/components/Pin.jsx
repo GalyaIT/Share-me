@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { client, urlFor } from "../client";
 import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { MdDownloadForOffline,MdOutlineChatBubbleOutline, MdOutlineLibraryAdd} from "react-icons/md";
+import { MdDownloadForOffline, MdOutlineChatBubbleOutline, MdOutlineLibraryAdd } from "react-icons/md";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 
@@ -75,7 +75,8 @@ const Pin = ({ pin }) => {
           alt="user-post"
         />
         {postHovered && (
-          <div
+          <div>
+ <div
             className="absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 pt-2 pb-2 z-50"
             style={{ height: "100%" }}
           >
@@ -123,7 +124,7 @@ const Pin = ({ pin }) => {
               )}
 
             </div>
-            <div className=" flex justify-between items-center gap-2 w-full">
+            <div className=" flex justify-between items-center gap-2 w-full mb-6">
               {destination && (
                 <a
                   href={destination}
@@ -148,27 +149,28 @@ const Pin = ({ pin }) => {
                 </button>
               )}
             </div>
+          
           </div>
+            <div className="absolute bottom-0 flex items-center justify-start w-full bg-white p-1 pl-2 text-black font-medium opacity-75">
+              <MdOutlineLibraryAdd />
+              <p className="pr-5 pl-2 text-sm">{save?.length} save</p>
+              <MdOutlineChatBubbleOutline />
+              <p className="pl-2 text-sm"> {comments?.length} {comments?.length === 1 ? 'comment' : 'comments'}</p>
+            </div>
+          </div>
+
+         
         )}
-      </div>
-      <div className="flex items-center justify-start">
-        <MdOutlineLibraryAdd />
-        <p className="pr-5 pl-2 text-sm">{save?.length} save</p>
-        <MdOutlineChatBubbleOutline />
-        <p className="pl-2 text-sm"> {comments?.length} {comments?.length === 1 ? 'comment' : 'comments'}</p>
-
-      </div>
-
+      </div>    
       <Link
         to={`/user-profile/${postedBy?._id}`}
         className="flex gap-2 mt-3 items-center"
       >
         <img
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-6 h-6 rounded-full object-cover"
           src={postedBy?.image}
           alt="user-profile"
         />
-
         <p className="font-semibold capitalize text-sm">{postedBy?.userName}</p>
       </Link>
     </div>

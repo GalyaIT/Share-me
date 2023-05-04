@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 
 import { Sidebar, UserProfile } from "../components";
 import Pins from "./Pins";
@@ -14,23 +14,26 @@ const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
-  const userInfo = fetchUser();  
+  const userInfo = fetchUser(); 
+ const navigate = useNavigate();
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0)
   }, []);
 
   useEffect(() => {
-    const query = userQuery(userInfo?.sub);
+    const query = userQuery(userInfo?.sub);  
+      client.fetch(query).then((data) => {
+        setUser(data[0]);
+      });    
 
-    client.fetch(query).then((data) => {
-      setUser(data[0]);
-      
-    });
   }, []);
 
-  return (
-    <div className="flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out">
+// if(!user){
+//  navigate('/login');
+// }
+  return (   
+<div className="flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out">
       <div className="hidden md:flex h-screen flex-initial">
         <Sidebar user={user && user} />
       </div>
@@ -59,7 +62,7 @@ const Home = () => {
           <Route path="/*" element={<Pins user={user && user} />} />
         </Routes>
       </div>
-    </div>
+    </div>  
   );
 };
 

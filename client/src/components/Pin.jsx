@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { client, urlFor } from "../client";
 import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { MdDownloadForOffline } from "react-icons/md";
+import { MdDownloadForOffline,MdOutlineChatBubbleOutline, MdOutlineLibraryAdd} from "react-icons/md";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
-import { FcAddImage, FcComments } from "react-icons/fc";
+
 import { fetchUser } from "../utils/fetchUser";
 
 const Pin = ({ pin }) => {
@@ -17,7 +17,7 @@ const Pin = ({ pin }) => {
   const user = fetchUser();
   const { postedBy, image, _id, destination, save, comments } = pin;
 
-  const alreadySaved = !!save?.filter((item) => item.postedBy._id === user.sub)
+  const alreadySaved = !!save?.filter((item) => item.postedBy?._id === user?.sub)
     ?.length;
 
   const savePin = (id) => {
@@ -30,10 +30,10 @@ const Pin = ({ pin }) => {
         .insert("after", "save[-1]", [
           {
             _key: uuidv4(),
-            userId: user.sub,
+            userId: user?.sub,
             postedBy: {
               _type: "postedBy",
-              _ref: user.sub,
+              _ref: user?.sub,
             },
           },
         ])
@@ -46,7 +46,7 @@ const Pin = ({ pin }) => {
       setUnSavingPost(true);
       client
         .patch(id)
-        .unset([`save[userId=="${user.sub}"]`])
+        .unset([`save[userId=="${user?.sub}"]`])
         .commit()
         .then(() => {
           window.location.reload();
@@ -54,7 +54,7 @@ const Pin = ({ pin }) => {
         });
     }
   };
-  console.log(comments);
+
   const deletePin = (id) => {
     client.delete(id).then(() => {
       window.location.reload();
@@ -93,29 +93,35 @@ const Pin = ({ pin }) => {
                 </a>
               </div>
 
-              {alreadySaved ? (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    savePin(_id);
-                  }}
-                  type="button"
-                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
-                >
-                  {unSavingPost ? "Unsaving" : "Saved"}
-                </button>
-              ) : (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    savePin(_id);
-                  }}
-                  type="button"
-                  className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
-                >
-                  {savingPost ? "Saving" : "Save"}
-                </button>
+              {postedBy?._id !== user?.sub && (
+                <>
+                  {alreadySaved ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        savePin(_id);
+                      }}
+                      type="button"
+                      className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
+                    >
+                      {unSavingPost ? "Unsaving" : "Saved"}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        savePin(_id);
+                      }}
+                      type="button"
+                      className="bg-red-500 opacity-70 hover:opacity-100 text-white font-bold px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
+                    >
+                      {savingPost ? "Saving" : "Save"}
+                    </button>
+                  )}
+                </>
+
               )}
+
             </div>
             <div className=" flex justify-between items-center gap-2 w-full">
               {destination && (
@@ -129,7 +135,7 @@ const Pin = ({ pin }) => {
                   {destination.slice(8, 17)}...
                 </a>
               )}
-              {postedBy?._id === user.sub && (
+              {postedBy?._id === user?.sub && (
                 <button
                   type="button"
                   onClick={(e) => {
@@ -146,15 +152,16 @@ const Pin = ({ pin }) => {
         )}
       </div>
       <div className="flex items-center justify-start">
-        <FcAddImage />
+        <MdOutlineLibraryAdd />
         <p className="pr-5 pl-2 text-sm">{save?.length} save</p>
-        <FcComments />
-        <p className="pl-2 text-sm">{comments?.length} comments</p>
+        <MdOutlineChatBubbleOutline />
+        <p className="pl-2 text-sm"> {comments?.length} {comments?.length === 1 ? 'comment' : 'comments'}</p>
+
       </div>
 
       <Link
         to={`/user-profile/${postedBy?._id}`}
-        className="flex gap-2 mt-2 items-center"
+        className="flex gap-2 mt-3 items-center"
       >
         <img
           className="w-8 h-8 rounded-full object-cover"
@@ -162,7 +169,7 @@ const Pin = ({ pin }) => {
           alt="user-profile"
         />
 
-        <p className="font-semibold capitalize">{postedBy?.userName}</p>
+        <p className="font-semibold capitalize text-sm">{postedBy?.userName}</p>
       </Link>
     </div>
   );

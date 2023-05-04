@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { GoogleLogin} from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
@@ -7,15 +7,24 @@ import jwt_decode from 'jwt-decode';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
 import { client } from '../client';
+import { fetchUser } from '../utils/fetchUser';
 
 const Login = () => {
-
  
-  const navigate = useNavigate();
+ const user = fetchUser(); 
+ const navigate = useNavigate();
+
+
+ useEffect(() => {
+  if (user) {
+    navigate("/");
+  }
+}, []);
+
   const responseGoogle = (response) => {
-console.log(response);
+    console.log(response);
     const decoded = jwt_decode(response.credential)
-console.log(decoded)
+    console.log(decoded)
     localStorage.setItem('user', JSON.stringify(decoded));
 
     const { name, picture, sub } = decoded;
@@ -30,6 +39,7 @@ console.log(decoded)
       navigate('/', { replace: true });
     });
   };
+
 
   return (
     <div className="flex justify-start items-center flex-col h-screen">
@@ -61,7 +71,7 @@ console.log(decoded)
               )}
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
-              cookiepolicy="single_host_origin"
+              cookiePolicy="single_host_origin"
             />
           </div>
         </div>

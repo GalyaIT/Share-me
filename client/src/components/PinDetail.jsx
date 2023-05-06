@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { MdDownloadForOffline,MdOutlineChatBubbleOutline } from "react-icons/md";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
-import { Link, useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+
 
 import { client, urlFor } from "../client";
 import MasonryLayout from "./MasonryLayout";
@@ -10,12 +10,12 @@ import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
 
 
+
 const PinDetail = ({ user }) => {
   const [pins, setPins] = useState(null);
-  const [pinDetail, setPinDetail] = useState(null);
-  const [comment, setComment] = useState("");
-  const [addingComment, setAddingComment] = useState(false);
-  const { pinId } = useParams();
+  const [pinDetail, setPinDetail] = useState(null); 
+  const { pinId } = useParams();    
+
 
   const fetchPinDetails = () => {
     let query = pinDetailQuery(pinId);
@@ -35,30 +35,7 @@ const PinDetail = ({ user }) => {
   useEffect(() => {
     fetchPinDetails();
   }, [pinId]);
-
-  const addComment = () => {
-    if (comment) {
-      setAddingComment(true);
-
-      client
-        .patch(pinId)
-        // .setIfMissing({ comments: [] })
-        .insert("after", "comments[-1]", [
-          {
-            comment,
-            _key: uuidv4(),
-            postedBy: { _type: "postedBy", _ref: user._id },
-          },
-        ])
-        .commit()
-        .then(() => {
-          fetchPinDetails();         
-          setComment("");
-          setAddingComment(false);
-        });
-    }
-  };
-
+  
   if (!pinDetail) {
     return <Spinner message="Showing pin" />;
   }
@@ -124,12 +101,11 @@ const PinDetail = ({ user }) => {
           (
             <Link to={`/pin-detail/${pinId}/comments`}>
               <p className="mt-5 text-md"> Comments</p>
-            </Link>
-            
+            </Link>            
           )}      
       
           <div className="max-h-370 overflow-y-auto">
-            {pinDetail?.comments?.slice(0, 3).map((comment, i) => (
+            {pinDetail?.comments?.slice(0,3).map((comment, i) => (
               <div
                 className="flex gap-2 mt-5 items-center bg-white rounded-lg"
                 key={i}
@@ -143,38 +119,11 @@ const PinDetail = ({ user }) => {
                   <p className="text-gray-500 font-bold">{comment.postedBy?.userName}</p>
                   <Link to={`/pin-detail/${pinId}/comments`}>
                   <p>{comment.comment}</p>
-                  </Link>
+                  </Link>                  
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* add comment */}
-          <div className="flex flex-wrap mt-6 gap-3">
-            <Link to={`/user-profile/${user?._id}`}>
-              <img
-                src={user?.image}
-                className="w-10 h-10 rounded-full cursor-pointer"
-                alt="user-profile"
-              />
-            </Link>
-            <input
-              className=" flex-1 border-gray-100 outline-none border-2 p-2 rounded-2xl focus:border-gray-300"
-              type="text"
-              placeholder="Add a comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <button
-              type="button"
-              className="bg-red-500 text-white rounded-full px-6 py-2 font-semibold text-base outline-none"
-              onClick={addComment}
-            >
-              {addingComment ? "Posting the comment..." : "Post"}
-            </button>
-          </div>
-         
-
+            ))}            
+          </div>        
         </div>
       </div>
      
@@ -187,8 +136,7 @@ const PinDetail = ({ user }) => {
           <MasonryLayout pins={pins} />
         ):(
           <Spinner message="Loading more pins" />
-        )}    
-  
+        )}      
     </>
   );
 };

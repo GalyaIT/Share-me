@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MdDownloadForOffline } from "react-icons/md";
+import { MdDownloadForOffline,MdOutlineChatBubbleOutline } from "react-icons/md";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { Link, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -8,6 +8,7 @@ import { client, urlFor } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
+
 
 const PinDetail = ({ user }) => {
   const [pins, setPins] = useState(null);
@@ -84,19 +85,22 @@ const PinDetail = ({ user }) => {
                 className="bg-secondaryColor p-2 text-xl rounded-full flex items-center justify-center text-dark opacity-75 hover:opacity-100"
               >
                 <MdDownloadForOffline />
-              </a>
+              </a>              
+              <Link to={`/pin-detail/${pinId}/comments`} >
+            <MdOutlineChatBubbleOutline className="w-9 h-9 p-2 flex items-center justify-center rounded-full bg-secondaryColor opacity-75 hover:opacity-100"/>
+          </Link> 
             </div>
             <div>
               
             </div>
-            <a  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
+            <a  className="bg-secondaryColor flex  items-center gap-2 text-gray-900 font-bold p-2 pl-4 pr-4 rounded-full opacity-75 hover:opacity-100 "
              href={pinDetail.destination} target="_blank" rel="noreferrer">
             <BsFillArrowUpRightCircleFill />
               {pinDetail.destination?.slice(8, 20)}...
             </a>
           </div>
           <div>
-            <h1 className="text-4xl font-bold break-words mt-3">
+            <h1 className="text-3xl font-bold break-words mt-3">
               {pinDetail.title}
             </h1>
             <p className="mt-3">{pinDetail.about}</p>
@@ -111,27 +115,41 @@ const PinDetail = ({ user }) => {
               alt="user-profile"
             />
             <p className="font-bold">{pinDetail?.postedBy.userName}</p>
-          </Link>
-          <h2 className="mt-5 text-2xl">Comments</h2>
+          </Link>         
+          
+          {pinDetail?.comments?.length > 3 ? 
+          (<Link to={`/pin-detail/${pinId}/comments`}>
+            <p className="mt-5 text-md"> View all {pinDetail.comments?.length} comments </p>
+          </Link>) : 
+          (
+            <Link to={`/pin-detail/${pinId}/comments`}>
+              <p className="mt-5 text-md"> Comments</p>
+            </Link>
+            
+          )}      
+      
           <div className="max-h-370 overflow-y-auto">
-            {pinDetail?.comments?.map((comment, i) => (
+            {pinDetail?.comments?.slice(0, 3).map((comment, i) => (
               <div
                 className="flex gap-2 mt-5 items-center bg-white rounded-lg"
                 key={i}
-              >
-                <img
+              >              
+               <img
                   src={comment.postedBy?.image}
                   className="w-10 h-10 rounded-full cursor-pointer"
                   alt="user-profile"
                 />
                 <div className="flex flex-col">
-                  <p className="font-bold">{comment.postedBy?.userName}</p>
+                  <p className="text-gray-500 font-bold">{comment.postedBy?.userName}</p>
+                  <Link to={`/pin-detail/${pinId}/comments`}>
                   <p>{comment.comment}</p>
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
 
+          {/* add comment */}
           <div className="flex flex-wrap mt-6 gap-3">
             <Link to={`/user-profile/${user?._id}`}>
               <img
@@ -155,6 +173,8 @@ const PinDetail = ({ user }) => {
               {addingComment ? "Posting the comment..." : "Post"}
             </button>
           </div>
+         
+
         </div>
       </div>
      

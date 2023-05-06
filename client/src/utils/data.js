@@ -93,6 +93,28 @@ export const pinDetailQuery = (pinId) => {
   return query;
 };
 
+export const pinCommentsQuery = (pinId) => {
+  const query = `*[_type == "pin" && _id == '${pinId}']{ 
+    _id,   
+    about,
+    postedBy->{
+      _id,
+      userName,
+      image
+    },   
+    comments[]{
+      comment,
+      _key,
+      postedBy->{
+        _id,
+        userName,
+        image
+      },
+    }
+  }`;
+  return query;
+};
+
 export const pinDetailMorePinQuery = (pin) => {
   const query = `*[_type == "pin" && category == '${pin.category}' && _id != '${pin._id}' ]{
     image{

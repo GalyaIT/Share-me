@@ -40,7 +40,16 @@ export default {
             name:'postedBy',
             title:'PostedBy',
             type: 'postedBy'
-        }, 
+        },
+        {
+            name: 'publishedAt',
+            title: 'Published at',
+            type: 'datetime',
+            options: {
+                dateFormat: 'YYYY-MM-DD',
+                calendarTodayLabel: 'Today'
+              }
+          },       
         {
             name:'save',
             title:'Save',

@@ -63,6 +63,7 @@ const CreatePin = ({ user }) => {
           _ref: user._id,
         },
         category,
+        publishedAt: new Date().toISOString(),
         save,
         comments,
       };

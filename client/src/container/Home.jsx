@@ -3,7 +3,7 @@ import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Link, Route, Routes } from "react-router-dom";
 
-import { Sidebar, UserProfile, Login } from "../components";
+import { Sidebar, UserProfile} from "../components";
 import Pins from "./Pins";
 import { userQuery } from "../utils/data";
 import { client } from "../client";
@@ -17,16 +17,18 @@ const Home = () => {
   const scrollRef = useRef(null);
   const userInfo = fetchUser(); 
 
+console.log(user);
 
   useEffect(() => {
     scrollRef.current.scrollTo(0, 0)
   }, []);
 
   useEffect(() => {
-    const query = userQuery(userInfo?.sub);  
-      client.fetch(query).then((data) => {
+    const query = userQuery(userInfo?.sub);
+        client.fetch(query).then((data) => {
         setUser(data[0]);
-      });    
+      }); 
+       
 
   }, []);
 
@@ -58,18 +60,16 @@ const Home = () => {
           </div>
         )}
       </div>
-      <div className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>
-        {user ? (
+      <div className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>      
           <Routes>
             <Route path="/user-profile/:userId" element={<UserProfile />} />
             <Route path="/*" element={<Pins user={user && user} />} />
-          </Routes>
-        ) : (
-          <Login />
-        )}
+          </Routes>     
       </div>
     </div>
   );
 };
 
 export default Home;
+
+

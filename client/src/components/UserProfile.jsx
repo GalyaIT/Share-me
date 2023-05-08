@@ -8,10 +8,12 @@ import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/da
 import { client } from '../client';
 import MasonryLayout from './MasonryLayout';
 import Spinner from './Spinner';
+import { fetchUser } from "../utils/fetchUser";
 
 const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
 const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
 const randomImage = 'https://source.unsplash.com/1600x900/?nature,photography,technology';
+
 
 const UserProfile = () => {
 const [user, setUser]=useState(null);
@@ -20,6 +22,9 @@ const[text, setText]=useState('Created');
 const [activeBtn, setActiveBtn]= useState('created');
 const navigate = useNavigate();
 const {userId}=useParams();
+const userInfo = fetchUser(); 
+
+
 
 useEffect(()=>{
 const query = userQuery(userId);
@@ -29,6 +34,8 @@ setUser(data[0]);
 })
 
 },[userId]);
+
+
 
 useEffect(()=>{
   if(text==='Created'){
@@ -44,8 +51,6 @@ useEffect(()=>{
     setPins(data);
     })
   }
-  
-
   
   },[text,userId]);
 
@@ -83,7 +88,7 @@ if(!user){
             {user.userName}
           </h1>
           <div className="absolute top-0 z-1 right-0 p-2">
-            {userId===user._id &&(
+            {userId===userInfo.sub &&(
                <button 
                type="button"
                className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
@@ -97,8 +102,8 @@ if(!user){
             )}
           </div>
       </div>
-            <div className="text-center mb-7"> 
-            <button
+        <div className="text-center mb-7">
+          <button
             type="button"
             onClick={(e) => {
               setText(e.target.textContent);
@@ -108,26 +113,28 @@ if(!user){
           >
             Created
           </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              setText(e.target.textContent);
-              setActiveBtn('saved');
-            }}
-            className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
-          >
-            Saved
-          </button>
-            </div>
+          {userId === userInfo.sub && (
+            <button
+              type="button"
+              onClick={(e) => {
+                setText(e.target.textContent);
+                setActiveBtn('saved');
+              }}
+              className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
+            >
+              Saved
+            </button>
+          )}
+        </div>
         <div className="px-2">
           <MasonryLayout pins={pins} />
           {pins?.length === 0 && (
             <div className="flex justify-center font-bold items-center w-full text-1xl mt-2">
               No Pins Found!
             </div>
-        )}
+          )}
         </div>
-     </div>
+      </div>
     </div>
   )
 }

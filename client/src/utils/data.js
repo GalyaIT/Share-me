@@ -88,6 +88,7 @@ export const pinDetailQuery = (pinId) => {
         userName,
         image
       },
+      publishedAt,
     }
   }`;
   return query;
@@ -101,7 +102,8 @@ export const pinCommentsQuery = (pinId) => {
       _id,
       userName,
       image
-    },   
+    },  
+    publishedAt, 
     comments[]{
       comment,
       _key,
@@ -110,6 +112,7 @@ export const pinCommentsQuery = (pinId) => {
         userName,
         image
       },
+      publishedAt,
     }
   }`;
   return query;

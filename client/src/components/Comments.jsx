@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import moment from 'moment';
 
 import { client } from "../client";
 import { pinCommentsQuery } from "../utils/data";
@@ -17,8 +18,10 @@ const Comments = ({ user }) => {
   const [addingComment, setAddingComment] = useState(false);
 
   const { pinId } = useParams();
+  console.log(user);
 
   const { about, postedBy, comments } = data;
+  console.log(data);
 
   const fetchPinComments = () => {
     const query = pinCommentsQuery(pinId);
@@ -44,7 +47,8 @@ const Comments = ({ user }) => {
           {
             comment,
             _key: uuidv4(),
-            postedBy: { _type: "postedBy", _ref: user._id },
+            postedBy: { _type: "postedBy", _ref: user._id },  
+            publishedAt: new Date().toISOString(),         
           },
         ])
         .commit()
@@ -55,7 +59,7 @@ const Comments = ({ user }) => {
         });
     }
   };
-
+  console.log(data);
   return (
     <div>
       <h1 className="text-center font-bold">Comments</h1>
@@ -71,11 +75,15 @@ const Comments = ({ user }) => {
             alt="user-profile"
           />
         </Link>
+
         <div className="flex flex-col justify-center">
           <p className="font-bold">{postedByUserName}</p>
+          <p className="text-gray-500 text-xs">{moment(data.publishedAt).fromNow()}</p>
           <p className="text-md">{about}</p>
         </div>
+
       </div>
+
 
       <div className="max-h-400 overflow-y-auto">
         {comments?.map((comment, i) => (
@@ -84,9 +92,9 @@ const Comments = ({ user }) => {
             key={i}
           >
             <div className="flex-none self-start">
-              <Link to={`/user-profile/${postedBy._id}`}>
+              <Link to={`/user-profile/${comment.postedBy._id}`}>
                 <img
-                  src={postedBy.image}
+                  src={comment.postedBy.image}
                   className="flex-none self-start w-10 h-10 rounded-full cursor-pointer"
                   alt="user-profile"
                 />
@@ -94,7 +102,8 @@ const Comments = ({ user }) => {
             </div>
 
             <div className="flex flex-col">
-              <p className="text-gray-500 font-bold">{user.userName}</p>
+              <p className="text-gray-500 font-bold">{comment.postedBy.userName}</p>
+              <p className="text-gray-500 text-xs">{moment(comment.publishedAt).fromNow()}</p>
               <p>{comment.comment}</p>
             </div>
           </div>

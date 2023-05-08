@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { MdDownloadForOffline,MdOutlineChatBubbleOutline } from "react-icons/md";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
+import moment from 'moment';
 
 
 import { client, urlFor } from "../client";
@@ -39,7 +40,7 @@ const PinDetail = ({ user }) => {
   if (!pinDetail) {
     return <Spinner message="Showing pin" />;
   }
- 
+console.log(pinDetail)
   return (
     <>
       <div
@@ -91,7 +92,7 @@ const PinDetail = ({ user }) => {
               className="w-10 h-10 rounded-full"
               alt="user-profile"
             />
-            <p className="font-bold">{pinDetail?.postedBy.userName}</p>
+            <p className="font-bold">{pinDetail?.postedBy.userName}</p>            
           </Link>         
           
           {pinDetail?.comments?.length > 3 ? 
@@ -118,6 +119,7 @@ const PinDetail = ({ user }) => {
                 <div className="flex flex-col">
                   <p className="text-gray-500 font-bold">{comment.postedBy?.userName}</p>
                   <Link to={`/pin-detail/${pinId}/comments`}>
+                  <p className="text-gray-500 text-xs">{moment(comment.publishedAt).fromNow()}</p>
                   <p>{comment.comment}</p>
                   </Link>                  
                 </div>

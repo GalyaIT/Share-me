@@ -9,7 +9,7 @@ import Spinner from './Spinner';
 
 const CreatePin = ({ user }) => {
   const [title, setTitle] = useState('');
-  const [about, setAbout] = useState('');  
+  const [about, setAbout] = useState('');
   const [destination, setDestination] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fields, setFields] = useState(null);
@@ -18,13 +18,15 @@ const CreatePin = ({ user }) => {
   const [save, setSave] = useState([]);
   const [imageAsset, setImageAsset] = useState(null);
   const [wrongImageType, setWrongImageType] = useState(false);
-
+  const[errors, setErrors]=useState({}); 
   const navigate = useNavigate();
+  const errorMessages = {}
+  
+
 
   const uploadImage = (e) => {
-   
-    const selectedFile = e.target.files[0];
-  
+
+    const selectedFile = e.target.files[0];   
     if (selectedFile.type === 'image/png' || selectedFile.type === 'image/svg' || selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/gif' || selectedFile.type === 'image/tiff') {
       setWrongImageType(false);
       setLoading(true);
@@ -43,8 +45,51 @@ const CreatePin = ({ user }) => {
     }
   };
 
-  const savePin = () => {   
-    if (title && about && destination && imageAsset?._id && category) {
+
+  const formValidation = () => {
+   
+    let isValid = true;
+    if (title?.trim().length < 3) {
+      errorMessages.title = 'Title must be at length 3 or more!'
+      isValid = false;
+    }
+    if (title?.trim().length > 50) {
+      errorMessages.title = 'Title must be at length less 50!'
+      isValid = false;
+    }
+    if (about?.trim().length < 10) {
+      errorMessages.about = 'Description must be at length 10 or more!'
+      isValid = false;
+    }
+    if (about?.trim().length > 500) {
+      errorMessages.about = 'Description must be at length less 500!'
+      isValid = false;
+    }
+    if (destination === null) {
+      errorMessages.destination = 'The field imageUrl can\'t be empty!'
+      isValid = false;
+    } else if (!destination?.startsWith('http') ) {
+      errorMessages.destination = 'Invalid Url!'
+      isValid = false;
+    }
+    if (category === '') {
+      console.log('here');
+      errorMessages.category = 'Choose category!'
+      isValid = false;
+    }
+    if(!imageAsset){
+      errorMessages.imageAsset="Select file to upload!";      
+    }
+  
+    setErrors(errorMessages);    
+    return isValid
+}
+
+  const savePin = () => {
+    
+    const isValid = formValidation();
+
+    if (isValid) {
       const doc = {
         _type: 'pin',
         title,
@@ -72,12 +117,12 @@ const CreatePin = ({ user }) => {
       });
     } else {
       setFields(true);
-
+     
       setTimeout(
         () => {
-          setFields(false);
+          setFields(false);         
         },
-        2000,
+        3000,
       );
     }
   };
@@ -85,11 +130,15 @@ const CreatePin = ({ user }) => {
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
       {fields && (
-        <p className="text-red-500 mb-5 text-xl transition-all duration-150 ease-in ">Please add all fields.</p>
-      )}
-      <div className=" flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5  w-full">
-        <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
+        <p className="text-red-500 mb-5 text-md bg-red-50 w-full text-center py-3 transition-all duration-150 ease-in ">Please add all fields.</p>
+      )}  
+      <div className=" flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5  w-full">      
+        <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">       
           <div className=" flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
+          {fields && (
+           <p className="text-red-400 text-sm">{errors.imageAsset}</p>           
+          )}  
+           
             {loading && (
               <Spinner />
             )}
@@ -99,8 +148,7 @@ const CreatePin = ({ user }) => {
               )
             }
             {!imageAsset ? (
-             
-              <label>
+              <label>                
                 <div className="flex flex-col items-center justify-center h-full">
                   <div className="flex flex-col justify-center items-center">
                     <p className="font-bold text-2xl">
@@ -138,8 +186,8 @@ const CreatePin = ({ user }) => {
             )}
           </div>
         </div>
-
-        <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
+        
+        <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">        
           <input
             type="text"
             value={title}
@@ -147,6 +195,10 @@ const CreatePin = ({ user }) => {
             placeholder="Add your title"
             className="placeholder:text-xl outline-none text-2xl sm:text-3xl font-bold border-b-2 border-gray-200 p-2"
           />
+          
+          {fields && (
+           <p className="text-red-400 text-sm">{errors.title}</p>           
+          )} 
           {user && (
             <div className="flex gap-2 mt-2 mb-2 items-center bg-white rounded-lg ">
               <img
@@ -155,7 +207,7 @@ const CreatePin = ({ user }) => {
                 alt="user-profile"
               />
               <p className="font-bold">{user.userName}</p>
-            </div>
+            </div>            
           )}
           <input
             type="text"
@@ -164,6 +216,9 @@ const CreatePin = ({ user }) => {
             placeholder="Tell everyone what your Pin is about"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
           />
+           {fields && (
+           <p className="text-red-400 text-sm">{errors.about}</p>           
+          )} 
           <input
             type="url"
             vlaue={destination}
@@ -171,10 +226,16 @@ const CreatePin = ({ user }) => {
             placeholder="Add a destination link"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
           />
+           {fields && (
+           <p className="text-red-400 text-sm">{errors.destination}</p>           
+          )} 
 
           <div className="flex flex-col">
             <div>
               <p className="mb-2 font-semibold text:lg sm:text-xl">Choose Pin Category</p>
+              {fields && (
+           <p className="text-red-400 text-sm">{errors.category}</p>           
+            )} 
               <select
                 onChange={(e) => {
                   setCategory(e.target.value);

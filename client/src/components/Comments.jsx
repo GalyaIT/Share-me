@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { client } from "../client";
 import { pinCommentsQuery } from "../utils/data";
+import ShowMoreLess from "./ShowMoreLess";
 
 
 const Comments = ({ user }) => {
@@ -18,10 +19,10 @@ const Comments = ({ user }) => {
   const [addingComment, setAddingComment] = useState(false);
 
   const { pinId } = useParams();
-  console.log(user);
+ 
 
-  const { about, postedBy, comments } = data;
-  console.log(data);
+  const { about, comments } = data;
+ 
 
   const fetchPinComments = () => {
     const query = pinCommentsQuery(pinId);
@@ -59,15 +60,14 @@ const Comments = ({ user }) => {
         });
     }
   };
-  console.log(data);
-  return (
-    <div>
-      <h1 className="text-center font-bold">Comments</h1>
 
+  return (
+    <div h-full>
+      <h1 className="text-center font-bold">Comments</h1>
       <div className="flex gap-2 mt-5 items-center bg-indigo-50/50 rounded-lg">
         <Link
           to={`/user-profile/${postedByUserId}`}
-          className="flex gap-2 m-0 items-center  rounded-lg "
+          className="flex-none self-start gap-2 m-0 items-center  rounded-lg "
         >
           <img
             src={postedByImage}
@@ -75,16 +75,12 @@ const Comments = ({ user }) => {
             alt="user-profile"
           />
         </Link>
-
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center min-h-min">
           <p className="font-bold">{postedByUserName}</p>
           <p className="text-gray-500 text-xs">{moment(data.publishedAt).fromNow()}</p>
-          <p className="text-md">{about}</p>
+          <ShowMoreLess text={about}/>        
         </div>
-
       </div>
-
-
       <div className="max-h-400 overflow-y-auto">
         {comments?.map((comment, i) => (
           <div
@@ -100,16 +96,14 @@ const Comments = ({ user }) => {
                 />
               </Link>
             </div>
-
             <div className="flex flex-col">
               <p className="text-gray-500 font-bold">{comment.postedBy.userName}</p>
               <p className="text-gray-500 text-xs">{moment(comment.publishedAt).fromNow()}</p>
-              <p>{comment.comment}</p>
+              <ShowMoreLess text={comment.comment}/>            
             </div>
           </div>
         ))}
-      </div>
-     
+      </div>     
       <div className="flex flex-wrap mt-8 mb-8 gap-3">
         <Link to={`/user-profile/${user?._id}`}>
           <img

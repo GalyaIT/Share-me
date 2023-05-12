@@ -12,26 +12,23 @@ import logo from "../assets/logo.png";
 import { fetchUser } from "../utils/fetchUser";
 
 const Home = () => {
+  
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState(null);
   const scrollRef = useRef(null);
   const userInfo = fetchUser(); 
-
-console.log(user);
-
-  useEffect(() => {
-    scrollRef.current.scrollTo(0, 0)
-  }, []);
-
+ 
   useEffect(() => {
     const query = userQuery(userInfo?.sub);
         client.fetch(query).then((data) => {
         setUser(data[0]);
-      }); 
-       
+      });     
 
   }, []);
 
+  useEffect(() => {
+    scrollRef.current.scrollTo(0, 0)
+  }, []);
 
   return (
     <div className="flex bg-gray-50 md:flex-row flex-col h-screen transition-height duration-75 ease-out">

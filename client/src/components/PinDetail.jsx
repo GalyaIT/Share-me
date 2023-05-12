@@ -9,7 +9,7 @@ import { client, urlFor } from "../client";
 import MasonryLayout from "./MasonryLayout";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
-
+import ShowMoreLess from "./ShowMoreLess";
 
 
 const PinDetail = ({ user }) => {
@@ -40,7 +40,7 @@ const PinDetail = ({ user }) => {
   if (!pinDetail) {
     return <Spinner message="Showing pin" />;
   }
-console.log(pinDetail)
+
   return (
     <>
       <div
@@ -78,10 +78,10 @@ console.log(pinDetail)
             </a>
           </div>
           <div>
-            <h1 className="text-3xl font-bold break-words mt-3">
+            <h1 className="text-3xl font-bold break-words mt-3 mb-3">
               {pinDetail.title}
-            </h1>
-            <p className="mt-3">{pinDetail.about}</p>
+            </h1>           
+            <ShowMoreLess text={pinDetail.about}/>
           </div>
           <Link
             to={`/user-profile/${pinDetail?.postedBy._id}`}
@@ -113,14 +113,14 @@ console.log(pinDetail)
               >              
                <img
                   src={comment.postedBy?.image}
-                  className="w-10 h-10 rounded-full cursor-pointer"
+                  className="flex-none self-start w-10 h-10 rounded-full cursor-pointer"
                   alt="user-profile"
                 />
                 <div className="flex flex-col">
                   <p className="text-gray-500 font-bold">{comment.postedBy?.userName}</p>
                   <Link to={`/pin-detail/${pinId}/comments`}>
-                  <p className="text-gray-500 text-xs">{moment(comment.publishedAt).fromNow()}</p>
-                  <p>{comment.comment}</p>
+                  <p className="text-gray-500 text-xs">{moment(comment.publishedAt).fromNow()}</p>                 
+                  <p className="truncate w-40 md:w-96">{comment.comment}</p>
                   </Link>                  
                 </div>
               </div>

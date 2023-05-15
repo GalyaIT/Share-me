@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { MdDownloadForOffline, MdOutlineChatBubbleOutline, MdOutlineLibraryAdd } from "react-icons/md";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
+import {FiEdit} from 'react-icons/fi';
 
 import { fetchUser } from "../utils/fetchUser";
 
@@ -76,7 +77,7 @@ const Pin = ({ pin }) => {
         />
         {postHovered && (
           <div>
- <div
+          <div
             className="absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 pt-2 pb-2 z-50"
             style={{ height: "100%" }}
           >
@@ -137,16 +138,32 @@ const Pin = ({ pin }) => {
                 </a>
               )}
               {postedBy?._id === user?.sub && (
+               <div className="flex justify-between"> 
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     deletePin(_id);
                   }}
-                  className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
+                  className="bg-white mr-1 p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
                 >
                   <AiTwotoneDelete />
                 </button>
+                <button
+                  type="button"
+                  onClick={(e) =>
+                    {
+                      e.stopPropagation();
+                      navigate(`/pin-detail/${_id}/editPin`)
+                    }}           
+                  className="bg-white p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
+                >
+                   <FiEdit/>
+                </button>
+                
+               </div>
+
+                
               )}
             </div>
           

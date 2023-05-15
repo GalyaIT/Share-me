@@ -78,7 +78,8 @@ const CreatePin = ({ user }) => {
       isValid = false;
     }
     if(!imageAsset){
-      errorMessages.imageAsset="Select file to upload!";      
+      errorMessages.imageAsset="Select file to upload!";
+      isValid = false;      
     }
   
     setErrors(errorMessages);    
@@ -221,7 +222,7 @@ const CreatePin = ({ user }) => {
           )} 
           <input
             type="url"
-            vlaue={destination}
+            value={destination}
             onChange={(e) => setDestination(e.target.value)}
             placeholder="Add a destination link"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"

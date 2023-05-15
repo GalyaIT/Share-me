@@ -93,7 +93,34 @@ export const pinDetailQuery = (pinId) => {
   }`;
   return query;
 };
-
+export const pinQuery = (pinId) => {
+  const query = `*[_type == "pin" && _id == '${pinId}']{
+    image{
+      asset->{
+        url, 
+        _id
+      }
+    },
+    _id,
+    title, 
+    about,
+    category,
+    destination,
+    postedBy->{
+      _id,
+      userName,
+      image
+    },
+   save[],
+    comments[]{      
+      _key,
+      postedBy->{
+        _id,       
+      },      
+    }
+  }`;
+  return query;
+};
 export const pinCommentsQuery = (pinId) => {
   const query = `*[_type == "pin" && _id == '${pinId}']{ 
     _id,   

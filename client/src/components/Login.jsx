@@ -5,7 +5,7 @@ import { FcGoogle } from 'react-icons/fc';
 import jwt_decode from 'jwt-decode';
 
 import shareVideo from '../assets/share.mp4';
-import logo from '../assets/logowhite.png';
+import logo from '../assets/mylogo-login.png';
 import { client } from '../client';
 import { fetchUser } from '../utils/fetchUser';
 

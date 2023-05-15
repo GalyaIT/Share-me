@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import { Navbar, Feed, PinDetail, CreatePin, Search } from '../components';
 import Comments from '../components/Comments';
-
+import EditPin from '../components/EditPin'; 
 
 const Pins = ({ user }) => {
   const [searchTerm, setSearchTerm] = useState(''); 
@@ -20,6 +20,7 @@ const Pins = ({ user }) => {
           <Route path="/pin-detail/:pinId" element={<PinDetail user={user && user} />} />
           <Route path="/pin-detail/:pinId/comments" element={<Comments user={user && user}/>} />
           <Route path="/create-pin" element={<CreatePin user={user && user} />} />
+          <Route path="/pin-detail/:pinId/editPin" element={<EditPin user={user && user}/>} />
           <Route path="/search" element={<Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />         
         </Routes>
       </div>

@@ -10,7 +10,7 @@ import Spinner from './Spinner';
 const CreatePin = ({ user }) => {
   const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');
-  const [destination, setDestination] = useState(null);
+  const [destination, setDestination] = useState('');
   const [loading, setLoading] = useState(false);
   const [fields, setFields] = useState(null);
   const [category, setCategory] = useState('');
@@ -65,7 +65,7 @@ const CreatePin = ({ user }) => {
       errorMessages.about = 'Description must be at length less 500!'
       isValid = false;
     }
-    if (destination === null) {
+    if (destination?.length === 0) {
       errorMessages.destination = 'The field imageUrl can\'t be empty!'
       isValid = false;
     } else if (!destination?.startsWith('http') ) {

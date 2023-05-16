@@ -71,7 +71,7 @@ const Pin = ({ pin }) => {
         className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
       >
         <img
-          className="rounded-lg w-full"
+          className="rounded-lg w-full min-h-150px"
           src={urlFor(image).width(250).url()}
           alt="user-post"
         />
@@ -130,11 +130,11 @@ const Pin = ({ pin }) => {
                 <a
                   href={destination}
                   target="_blank"
-                  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-4 pr-4 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
+                  className="bg-white flex items-center gap-2 text-black font-bold p-2 pl-3 pr-3 rounded-full opacity-70 hover:opacity-100 hover:shadow-md"
                   rel="noreferrer"
                 >
                   <BsFillArrowUpRightCircleFill />
-                  {destination.slice(8, 17)}...
+                  {destination.slice(8, 15)}...
                 </a>
               )}
               {postedBy?._id === user?.sub && (

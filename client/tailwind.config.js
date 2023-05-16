@@ -29,6 +29,9 @@ module.exports = {
         800: '800px',
         '90vh': '90vh',
       },
+      minHeight: {
+        '150px': '150px',
+       },
       flex: {
         0.7: '0.7 1 0%',
       },

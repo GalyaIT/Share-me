@@ -6,17 +6,24 @@ import { MdDownloadForOffline, MdOutlineChatBubbleOutline, MdOutlineLibraryAdd }
 import { AiTwotoneDelete } from "react-icons/ai";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import {FiEdit} from 'react-icons/fi';
-
+import Dialog from "./Dialog";
 import { fetchUser } from "../utils/fetchUser";
+
 
 const Pin = ({ pin }) => {
   const [postHovered, setPostHovered] = useState(false);
   const [savingPost, setSavingPost] = useState(false);
   const [unSavingPost, setUnSavingPost] = useState(false);
 
+  const [dialog, setDialog] = useState({
+    message: "",
+    isLoading: false,   
+  });
+
   const navigate = useNavigate();
   const user = fetchUser();
   const { postedBy, image, _id, destination, save, comments } = pin;
+  console.log(pin);
 
   const alreadySaved = !!save?.filter((item) => item.postedBy?._id === user?.sub)
     ?.length;
@@ -56,14 +63,31 @@ const Pin = ({ pin }) => {
     }
   };
 
-  const deletePin = (id) => {
-    client.delete(id).then(() => {
-      window.location.reload();
+  const handleDelete = (id) => {   
+     handleDialog("Are you sure you want to delete?", true);    
+  };
+
+  const handleDialog = (message, isLoading) => {
+    setDialog({
+      message,
+      isLoading     
     });
+  }
+
+  const areUSureDelete = (choose) => {
+    if (choose) {     
+     client.delete(pin._id).then(() => {
+     window.location.reload();
+    });
+      handleDialog("", false);
+      
+    } else {
+      handleDialog("", false);      
+    }
   };
 
   return (
-    <div className="m-2">
+    <div className="m-2">      
       <div
         onMouseEnter={() => setPostHovered(true)}
         onMouseLeave={() => setPostHovered(false)}
@@ -123,8 +147,8 @@ const Pin = ({ pin }) => {
                 </>
 
               )}
-
             </div>
+
             <div className=" flex justify-between items-center gap-2 w-full mb-6">
               {destination && (
                 <a
@@ -143,7 +167,7 @@ const Pin = ({ pin }) => {
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    deletePin(_id);
+                    handleDelete(_id);                   
                   }}
                   className="bg-white mr-1 p-2 rounded-full w-8 h-8 flex items-center justify-center text-dark opacity-75 hover:opacity-100 outline-none"
                 >
@@ -161,12 +185,17 @@ const Pin = ({ pin }) => {
                    <FiEdit/>
                 </button>
                 
-               </div>
-
-                
+               </div>                
               )}
             </div>
           
+              {dialog.isLoading && (
+                <Dialog
+                  onDialog={areUSureDelete}
+                  message={dialog.message}
+                />
+              )}       
+ 
           </div>
             <div className="absolute bottom-0 flex items-center justify-start w-full bg-white p-1 pl-2 text-black font-medium opacity-75">
               <MdOutlineLibraryAdd />

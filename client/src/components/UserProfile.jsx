@@ -88,7 +88,7 @@ if(!user){
             {user.userName}
           </h1>
           <div className="absolute top-0 z-1 right-0 p-2">
-            {userId===userInfo.sub &&(
+            {userId===userInfo?.sub &&(
                <button 
                type="button"
                className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
@@ -113,7 +113,7 @@ if(!user){
           >
             Created
           </button>
-          {userId === userInfo.sub && (
+          {userId === userInfo?.sub && (
             <button
               type="button"
               onClick={(e) => {

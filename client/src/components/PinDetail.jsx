@@ -12,12 +12,22 @@ import Spinner from "./Spinner";
 import ShowMoreLess from "./ShowMoreLess";
 
 
+
 const PinDetail = ({ user }) => {
   const [pins, setPins] = useState(null);
   const [pinDetail, setPinDetail] = useState(null); 
-  const { pinId } = useParams();    
 
+  const { pinId } = useParams();  
 
+  useEffect(() => {
+    // 👇️ scroll to top on page load 
+     
+    window.scrollTo({top: 0, behavior: 'smooth'});  
+    
+    
+  }, [pinId]);
+
+ 
   const fetchPinDetails = () => {
     let query = pinDetailQuery(pinId);
     if (query) {
@@ -34,7 +44,7 @@ const PinDetail = ({ user }) => {
   };
 
   useEffect(() => {
-    fetchPinDetails();
+    fetchPinDetails(); 
   }, [pinId]);
   
   if (!pinDetail) {
@@ -43,9 +53,9 @@ const PinDetail = ({ user }) => {
 
   return (
     <>
-      <div
+      <div     
         className="flex xl:flex-row flex-col m-auto bg-white"
-        style={{ maxWidth: "1500px", borderRadius: "32px" }}
+        style={{ maxWidth: "1500px", borderRadius: "32px" }}         
       >
         <div className="flex justify-center items-center md:items-start flex-initial">
           <img
@@ -67,10 +77,7 @@ const PinDetail = ({ user }) => {
               <Link to={`/pin-detail/${pinId}/comments`} >
             <MdOutlineChatBubbleOutline className="w-9 h-9 p-2 flex items-center justify-center rounded-full bg-secondaryColor opacity-75 hover:opacity-100"/>
           </Link> 
-            </div>
-            <div>
-              
-            </div>
+            </div>          
             <a  className="bg-secondaryColor flex  items-center gap-2 text-gray-900 font-bold p-2 pl-4 pr-4 rounded-full opacity-75 hover:opacity-100 "
              href={pinDetail.destination} target="_blank" rel="noreferrer">
             <BsFillArrowUpRightCircleFill />
@@ -129,7 +136,7 @@ const PinDetail = ({ user }) => {
         </div>
       </div>
      
-      {pins?.length > 0 && (       
+       {pins?.length > 0 && (       
         <h2 className="text-center font-bold text-2xl mt-8 mb-4">
           More like this
         </h2>
@@ -138,8 +145,8 @@ const PinDetail = ({ user }) => {
           <MasonryLayout pins={pins} />
         ):(
           <Spinner message="Loading more pins" />
-        )}      
-    </>
+        )}         
+     </>     
   );
 };
 

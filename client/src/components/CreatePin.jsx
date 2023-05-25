@@ -69,7 +69,7 @@ const CreatePin = ({ user }) => {
       errorMessages.destination = 'The field imageUrl can\'t be empty!'
       isValid = false;
     } else if (!destination?.startsWith('http') ) {
-      errorMessages.destination = 'Invalid Url!'
+      errorMessages.destination = 'Invalid Url! It must start with \'http\'.'
       isValid = false;
     }
     if (category === '') {

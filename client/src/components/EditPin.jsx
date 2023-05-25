@@ -92,7 +92,7 @@ const EditPin = ({ user}) => {
       isValid = false;
     }
     else if (!updatedPin?.destination?.startsWith("http")) {
-      errorMessages.destination = "Invalid Url!";
+      errorMessages.destination = "Invalid Url! It must start with \'http\'.";
       isValid = false;
     }    
     if (!imageAsset?._id) {

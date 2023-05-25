@@ -7,9 +7,8 @@ function Dialog({ message, onDialog }) {
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="sticky top-1/2 left-1/4 w-60 md:w-96 
-        bg-stone-100 drop-shadow-xl rounded-xl p-6
-        "        >
+          className="sticky top-1/2 w-3/4 m-auto
+        bg-stone-100 drop-shadow-xl rounded-xl p-6 "        >
           <h3 className="text-red-500 text-sm pb-2 text-center">{message}</h3>
           <div className="flex justify-center">
             <button
